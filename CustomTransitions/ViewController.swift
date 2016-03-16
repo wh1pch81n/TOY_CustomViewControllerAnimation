@@ -49,6 +49,17 @@ class ViewController: UIViewController {
 	
 }
 
+class Dummyvc: UIViewController {
+	
+	override func viewDidLoad() {
+		print("load")
+	}
+	
+	override func viewDidAppear(animated: Bool) {
+		print("Appear")
+	}
+}
+
 // presenting and dismissing a viewcontroller creates a context for you but in the case of using child view controllers you need to create your own context.
 class ContextTransitioning: NSObject, UIViewControllerContextTransitioning {
 	
@@ -106,8 +117,9 @@ class ContextTransitioning: NSObject, UIViewControllerContextTransitioning {
 	}
 	
 	func completeTransition(didComplete: Bool) {
-		contentView.subviews.forEach({ $0.removeFromSuperview() })
-		contentView.addSubview(toVC.view)
+		contentView.subviews
+			.filter({ $0 != toVC.view })
+			.forEach({ $0.removeFromSuperview() })
 		subview(toVC.view, constrainedToSuperView: contentView)
 		animatorDelegate?.animationEnded?(true)
 	}
